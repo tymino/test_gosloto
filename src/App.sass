@@ -1,0 +1,48 @@
+.ticket
+  max-width: 400px
+  padding: 20px
+  text-align: center
+
+  &__header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 10px
+  &__title
+    font-size: 1.4rem
+    font-weight: bold
+
+  &__button
+    padding: 10px
+    background: none
+    border: 1px solid black
+    border-radius: 5px
+
+    font-weight: bold
+    text-transform: uppercase
+    cursor: pointer
+    transition: .3s ease
+
+    &:hover
+      color: white
+      background: black
+      border: 1px solid white
+
+    &:disabled
+      color: gray
+      background: white
+      border: 1px solid gray
+
+  &__game
+    display: flex
+    flex-direction: column
+    margin-bottom: 20px
+
+  &__inform
+    font-size: 2.7rem
+    font-weight: bold
+    text-transform: uppercase
+
+  &__warning
+    color: red
+    font-size: 1.2rem
