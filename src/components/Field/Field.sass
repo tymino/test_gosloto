@@ -7,40 +7,11 @@
   &__name
     font-weight: bold
     margin-right: 10px
+    color: var(--color-secondary)
 
   &__rules
+    color: var(--color-secondary)
 
   &__buttons
     display: flex
-    justify-items: flex-start
     flex-wrap: wrap
-
-  &__button
-    width: 50px
-    height: 50px
-    margin-right: 4px
-    margin-bottom: 4px
-    border: 1px solid var(--color-btn)
-    border-radius: var(--border-rad)
-    background: none
-    color: var(--color-btn)
-    cursor: pointer
-
-    font-size: 1.4rem
-    transition: .3s ease
-
-    &:hover:not(.field__button--selected)
-      background: var(--color-btn-h)
-      border: 1px solid var(--color-btn-h)
-      color: var(--color-btn-primary)
-
-    &--allselect
-      pointer-events: none
-    
-    &--selected
-      background: var(--color-btn-selected)
-      border: 1px solid var(--color-btn-selected)
-      color: var(--color-btn-primary)
-
-      &:hover
-        background: var(--color-btn-selected-h)

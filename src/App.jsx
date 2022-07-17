@@ -1,7 +1,7 @@
 import './App.sass';
 import { useState, useEffect } from 'react';
 
-import { Field } from './components';
+import { Button, Field } from './components';
 
 const App = () => {
   const generator = (length, maxValue) => {
@@ -169,15 +169,21 @@ const App = () => {
       <div className="ticket__header">
         <div className="ticket__title">Билет 1</div>
         {!gameEnd && (
-          <button
-            className="ticket__button ticket__random"
-            onClick={handleRandomFillButton}>
-            <img
-              className="ticket__button-image"
-              src="./images/magic-wand.png"
-              alt="magic-wand"
-            />
-          </button>
+          <Button type="link" buttonHandler={handleRandomFillButton}>
+            <svg
+              version="1.1"
+              viewBox="0 0 476.917 476.917"
+              xmlSpace="preserve">
+              <path
+                d="M399.135,0L90.503,308.633l77.781,77.782L476.917,77.783L399.135,0z M434.491,77.783l-160.14,160.14l-35.355-35.355
+              l160.14-160.141L434.491,77.783z M132.928,308.633l84.853-84.853l35.355,35.355l-84.853,84.853L132.928,308.633z"
+              />
+              <path
+                d="M65.753,283.887l-35.355-35.355l21.213-21.213l35.355,35.355L65.753,283.887z M228.39,446.524l-35.355-35.355
+              l21.213-21.213l35.355,35.355L228.39,446.524z M51.606,446.519l-21.213-21.213l35.355-35.355l21.213,21.213L51.606,446.519z"
+              />
+            </svg>
+          </Button>
         )}
       </div>
 
@@ -195,16 +201,21 @@ const App = () => {
           />
         </div>
       ) : (
-        <div className="ticket__inform">{isWin ? 'Победа' : 'Неудача'}</div>
+        <div
+          className={`ticket__inform ${
+            isWin ? 'ticket__inform--win' : 'ticket__inform--lose'
+          }`}>
+          {isWin ? 'Победа' : 'Неудача'}
+        </div>
       )}
 
       {!gameEnd && (
-        <button
-          className="ticket__result ticket__button"
-          onClick={handleClickShowResult}
-          disabled={setDisabledResultButton()}>
-          Показать результат
-        </button>
+        <Button
+          type="primary"
+          disabled={setDisabledResultButton()}
+          buttonHandler={handleClickShowResult}
+          value="Показать результат"
+        />
       )}
 
       <div className="ticket__warning">{warningText}</div>

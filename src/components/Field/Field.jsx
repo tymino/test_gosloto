@@ -1,20 +1,12 @@
 import './Field.sass';
 
+import { Button } from '../';
+
 const Field = ({ id, data, updateData }) => {
   const { name, rules, selected, win, allNumbers } = data;
 
-  const handleClickButton = (event) => {
-    const value = Number(event.target.value);
-    updateData(id, value);
-  };
-
-  const setStyleButton = (actualIndex) => {
-    const maxSelected =
-      selected.length === win ? `field__button--allselect` : '';
-
-    return selected.includes(actualIndex)
-      ? 'field__button field__button--selected'
-      : `field__button ${maxSelected}`;
+  const handleClickButton = (buttonValue) => {
+    updateData(id, buttonValue);
   };
 
   return (
@@ -27,13 +19,15 @@ const Field = ({ id, data, updateData }) => {
       <div className="field__buttons">
         {Array.from({ length: allNumbers }, (_, i) => i + 1).map((button) => {
           return (
-            <button
-              key={button}
-              className={setStyleButton(button)}
-              onClick={handleClickButton}
-              value={button}>
-              {button}
-            </button>
+            <div key={button}>
+              <Button
+                type="secondary"
+                buttonHandler={handleClickButton}
+                selected={selected.includes(button)}
+                maxSelected={selected.length === win}
+                value={button}
+              />
+            </div>
           );
         })}
       </div>

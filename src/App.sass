@@ -1,8 +1,10 @@
 .ticket
+  width: 100%
   max-width: 400px
+  min-height: 400px
   padding: 20px
   margin: 20px 10px
-  background: var(--color-ticket)
+  background: var(--color-primary)
   border-radius: calc(var(--border-rad) * 2)
   text-align: center
 
@@ -15,41 +17,11 @@
   &__title
     font-size: 1.4rem
     font-weight: bold
-    color: var(--color-primary)
+    color: var(--color-secondary)
 
-  &__button
-    padding: 10px
-    background: none
-    border: 1px solid var(--color-primary)
-    border-radius: var(--border-rad)
-
-    font-weight: bold
-    text-transform: uppercase
-    cursor: pointer
-    transition: .3s ease
-
-    &:hover:not(:disabled)
-      color: var(--color-secondary)
-      background: var(--color-primary)
-      border: 1px solid var(--color-secondary)
-
-    &:disabled
-      cursor: default
-      // opacity: .8
-      // color: gray
-      // background: var(--color-secondary)
-      border: 1px solid var(--color-secondary)
-
-    &-image
-      width: 20px
-      height: 20px
-
-  &__random
-    border: none
-
-    &:hover
-      border: none
-      background: none
+  &__button-image
+    width: 20px
+    height: 20px
 
   &__game
     display: flex
@@ -57,9 +29,17 @@
     margin-bottom: 20px
 
   &__inform
+    padding-bottom: 20px
+    margin-bottom: 4px
+    border-bottom: 1px dashed var(--color-secondary)
     font-size: 2.7rem
     font-weight: bold
     text-transform: uppercase
+
+    &--win
+      color: var(--color-success)
+    &--lose
+      color: var(--color-warning)
 
   &__warning
     color: var(--color-warning)
