@@ -51,12 +51,11 @@ const App = () => {
   });
 
   const checkWinner = (data) => {
-    const overlapFirst = data.firstField.selected.filter((num) =>
-      randomData.firstField.includes(num),
-    );
-    const overlapSecond = data.secondField.selected.filter((num) =>
-      randomData.secondField.includes(num),
-    );
+    const getOverlap = (name) =>
+      data[name].selected.filter((num) => randomData[name].includes(num));
+
+    const overlapFirst = getOverlap('firstField');
+    const overlapSecond = getOverlap('secondField');
 
     if (overlapFirst.length >= 4) {
       setIsWin(true);
@@ -113,10 +112,11 @@ const App = () => {
   };
 
   const setDisabledResultButton = () => {
-    const fieldFirst =
-      selectedData.firstField.selected.length === selectedData.firstField.win;
-    const fieldSecond =
-      selectedData.secondField.selected.length === selectedData.secondField.win;
+    const getBool = (name) =>
+      selectedData[name].selected.length === selectedData[name].win;
+
+    const fieldFirst = getBool('firstField');
+    const fieldSecond = getBool('secondField');
 
     return !(fieldFirst && fieldSecond);
   };
