@@ -1,6 +1,9 @@
 .ticket
   max-width: 400px
   padding: 20px
+  margin: 20px 10px
+  background: var(--color-ticket)
+  border-radius: calc(var(--border-rad) * 2)
   text-align: center
 
   &__header
@@ -8,30 +11,45 @@
     justify-content: space-between
     align-items: center
     margin-bottom: 10px
+
   &__title
     font-size: 1.4rem
     font-weight: bold
+    color: var(--color-primary)
 
   &__button
     padding: 10px
     background: none
-    border: 1px solid black
-    border-radius: 5px
+    border: 1px solid var(--color-primary)
+    border-radius: var(--border-rad)
 
     font-weight: bold
     text-transform: uppercase
     cursor: pointer
     transition: .3s ease
 
-    &:hover
-      color: white
-      background: black
-      border: 1px solid white
+    &:hover:not(:disabled)
+      color: var(--color-secondary)
+      background: var(--color-primary)
+      border: 1px solid var(--color-secondary)
 
     &:disabled
-      color: gray
-      background: white
-      border: 1px solid gray
+      cursor: default
+      // opacity: .8
+      // color: gray
+      // background: var(--color-secondary)
+      border: 1px solid var(--color-secondary)
+
+    &-image
+      width: 20px
+      height: 20px
+
+  &__random
+    border: none
+
+    &:hover
+      border: none
+      background: none
 
   &__game
     display: flex
@@ -44,5 +62,5 @@
     text-transform: uppercase
 
   &__warning
-    color: red
+    color: var(--color-warning)
     font-size: 1.2rem

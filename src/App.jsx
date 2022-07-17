@@ -170,9 +170,13 @@ const App = () => {
         <div className="ticket__title">Билет 1</div>
         {!gameEnd && (
           <button
-            className="ticket__random ticket__button"
+            className="ticket__button ticket__random"
             onClick={handleRandomFillButton}>
-            случайные
+            <img
+              className="ticket__button-image"
+              src="./images/magic-wand.png"
+              alt="magic-wand"
+            />
           </button>
         )}
       </div>

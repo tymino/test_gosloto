@@ -1,7 +1,7 @@
 import './Field.sass';
 
 const Field = ({ id, data, updateData }) => {
-  const { name, rules, selected, allNumbers } = data;
+  const { name, rules, selected, win, allNumbers } = data;
 
   const handleClickButton = (event) => {
     const value = Number(event.target.value);
@@ -9,9 +9,12 @@ const Field = ({ id, data, updateData }) => {
   };
 
   const setStyleButton = (actualIndex) => {
+    const maxSelected =
+      selected.length === win ? `field__button--allselect` : '';
+
     return selected.includes(actualIndex)
       ? 'field__button field__button--selected'
-      : 'field__button';
+      : `field__button ${maxSelected}`;
   };
 
   return (
