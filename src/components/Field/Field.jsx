@@ -16,6 +16,12 @@ const Field = ({ id, data, updateData }) => {
         <p className="field__rules">{rules}</p>
       </div>
 
+      <progress
+        className="field__progress"
+        max={win}
+        value={selected.length}
+      />
+
       <div className="field__buttons">
         {Array.from({ length: allNumbers }, (_, i) => i + 1).map((button) => {
           return (

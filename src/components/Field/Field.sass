@@ -2,7 +2,7 @@
   &__header
     display: flex
     margin-top: 20px
-    margin-bottom: 10px
+    margin-bottom: 16px
 
   &__name
     font-weight: bold
@@ -11,6 +11,28 @@
 
   &__rules
     color: var(--color-secondary)
+
+  &__progress
+    border-radius: var(--border-rad)
+    width: 100%
+    height: 12px
+    margin-bottom: 10px
+    padding: 0 2px
+    transition: .7s ease
+
+    &::-webkit-progress-bar
+      background: var(--color-primary)
+      border: 1px solid var(--color-secondary)
+      border-radius: var(--border-rad)
+    
+    &::-webkit-progress-value
+      background: var(--color-success)
+      border-radius: var(--border-rad)
+      transition: .7s ease
+
+    // &::-moz-progress-bar
+      // no browser
+
 
   &__buttons
     display: flex
