@@ -3,56 +3,44 @@ import { useState, useEffect } from 'react';
 
 import { Button, Field } from './components';
 
+const generator = (length, maxValue) => {
+  let set = new Set();
+
+  while (set.size < length) {
+    const number = Math.floor(Math.random() * maxValue + 1);
+    set.add(number);
+  }
+
+  return [...set];
+};
+
 const App = () => {
-  const generator = (length, maxValue) => {
-    let set = new Set();
-    let counter = 0;
-
-    while (counter < length) {
-      const number = Math.floor(Math.random() * maxValue + 1);
-
-      set.add(number);
-      counter = set.size;
-    }
-
-    return [...set];
-  };
-
   const [isWin, setIsWin] = useState(false);
   const [gameEnd, setGameEnd] = useState(false);
   const [warningText, setWarningText] = useState('');
 
-  const [selectedData, setSelectedData] = useState({
-    firstField: {
-      name: 'Поле 1',
-      rules: 'Отметьте 8 чисел.',
-      selected: [],
-      win: 8,
-      allNumbers: 19,
-    },
-    secondField: {
-      name: 'Поле 2',
-      rules: 'Отметьте 1 число.',
-      selected: [],
-      win: 1,
-      allNumbers: 2,
-    },
+  // Вынести "выбранное" в отдельный стейт
+  const [firstField, setFirstField] = useState({
+    name: 'Поле 1',
+    rules: 'Отметьте 8 чисел.',
+    selected: [],
+    win: 8,
+    allNumbers: 19,
   });
-  // eslint-disable-next-line no-unused-vars
-  const [randomData, setRandomData] = useState({
-    firstField: generator(
-      selectedData.firstField.win,
-      selectedData.firstField.allNumbers,
-    ),
-    secondField: generator(
-      selectedData.secondField.win,
-      selectedData.secondField.allNumbers,
-    ),
+  const [secondField, setSecondField] = useState({
+    name: 'Поле 2',
+    rules: 'Отметьте 1 число.',
+    selected: [],
+    win: 1,
+    allNumbers: 2,
   });
 
-  const checkWinner = (data) => {
-    const getOverlap = (name) =>
-      data[name].selected.filter((num) => randomData[name].includes(num));
+  const checkWinner = () => {
+    const getOverlap = (name) => {
+      const generateFiield = generator(firstField.win, firstField.allNumbers);
+
+      return [name].selected.filter((num) => generateFiield.includes(num));
+    };
 
     const overlapFirst = getOverlap('firstField');
     const overlapSecond = getOverlap('secondField');
@@ -66,59 +54,50 @@ const App = () => {
     setGameEnd(true);
   };
 
-  const updateData = (id, value) => {
-    const updateArray = (arr, win) => {
-      if (arr.includes(value)) {
-        return arr.filter((button) => button !== value);
-      }
+  // const updateData = (id, value) => {
+  //   const updateArray = (arr, win) => {
+  //     if (arr.includes(value)) {
+  //       return arr.filter((button) => button !== value);
+  //     }
 
-      if (arr.length === win) return arr;
+  //     if (arr.length === win) return arr;
 
-      return [...arr, value];
-    };
+  //     return [...arr, value];
+  //   };
 
-    const newData = {
-      ...selectedData,
-      [id]: {
-        ...selectedData[id],
-        selected: updateArray(selectedData[id].selected, selectedData[id].win),
-      },
-    };
+  //   const newData = {
+  //     ...selectedData,
+  //     [id]: {
+  //       ...selectedData[id],
+  //       selected: updateArray(selectedData[id].selected, selectedData[id].win),
+  //     },
+  //   };
 
-    setSelectedData(newData);
-  };
+  //   setSelectedData(newData);
+  // };
 
   const handleRandomFillButton = () => {
-    setSelectedData({
-      firstField: {
-        ...selectedData.firstField,
-        selected: generator(
-          selectedData.firstField.win,
-          selectedData.firstField.allNumbers,
-        ),
-      },
-      secondField: {
-        ...selectedData.secondField,
-        selected: generator(
-          selectedData.secondField.win,
-          selectedData.secondField.allNumbers,
-        ),
-      },
+    setFirstField({
+      ...firstField,
+      selected: generator(firstField.win, firstField.allNumbers),
+    });
+    setSecondField({
+      ...secondField,
+      selected: generator(secondField.win, secondField.allNumbers),
     });
   };
 
   const handleClickShowResult = () => {
-    checkWinner(selectedData);
+    checkWinner();
   };
 
   const setDisabledResultButton = () => {
-    const getBool = (name) =>
-      selectedData[name].selected.length === selectedData[name].win;
+    const isMaxSelectedFieldFirst =
+      firstField.selected.length === firstField.win;
+    const isMaxSelectedFieldSecond =
+      secondField.selected.length === secondField.win;
 
-    const fieldFirst = getBool('firstField');
-    const fieldSecond = getBool('secondField');
-
-    return !(fieldFirst && fieldSecond);
+    return !(isMaxSelectedFieldFirst && isMaxSelectedFieldSecond);
   };
 
   useEffect(() => {
@@ -127,42 +106,40 @@ const App = () => {
     let timer = null;
     let countConnect = 0;
 
-    const sendData = {
+    const data = {
       selectedNumber: {
-        firstField: selectedData.firstField.selected,
-        secondField: selectedData.secondField.selected,
+        firstField: firstField.selected,
+        secondField: secondField.selected,
       },
 
       isTicketWon: isWin,
     };
 
-    const sendDataToServer = async () => {
+    const fetchData = async () => {
       try {
         const response = await fetch('https://localhost:4000', {
           method: 'POST',
-          body: JSON.stringify(sendData),
+          body: JSON.stringify(data),
         });
 
-        // eslint-disable-next-line no-unused-vars
-        const json = await response.json();
+        await response.json();
       } catch (error) {
         if (countConnect < 2) {
           timer = setTimeout(() => {
-            sendDataToServer();
+            fetchData();
             countConnect++;
           }, 2000);
         } else {
           setWarningText('Сервер недоступен!');
-          clearInterval(timer);
+          clearTimeout(timer);
         }
       }
     };
 
-    sendDataToServer();
+    fetchData();
 
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameEnd]);
+  }, [firstField.selected, gameEnd, isWin, secondField.selected]);
 
   return (
     <div className="ticket">
@@ -191,13 +168,13 @@ const App = () => {
         <div className="ticket__game">
           <Field
             id="firstField"
-            data={selectedData.firstField}
-            updateData={updateData}
+            data={firstField}
+            updateSelected={setFirstField}
           />
           <Field
             id="secondField"
-            data={selectedData.secondField}
-            updateData={updateData}
+            data={secondField}
+            updateSelected={setSecondField}
           />
         </div>
       ) : (

@@ -1,0 +1,28 @@
+.cell
+  width: 50px
+  height: 50px
+  margin: 4px
+  background: none
+  border: 1px solid var(--color-secondary)
+  border-radius: var(--border-rad)
+  color: var(--color-secondary)
+  font-size: 1.4rem
+  font-weight: bold
+  text-transform: uppercase
+  cursor: pointer
+  transition: .4s ease
+  user-select: none
+
+  &:hover:not(.cell--selected)
+    background: var(--color-secondary)
+    color: var(--color-primary)
+
+  &--selected
+    background: var(--color-active)
+    border: 1px solid var(--color-primary)
+
+    &:hover
+      background: var(--color-active-h)
+
+  &--maxSelected
+    pointer-events: none
