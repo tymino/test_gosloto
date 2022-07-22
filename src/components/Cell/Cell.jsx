@@ -6,17 +6,14 @@ const Cell = ({
   selected = false,
   maxSelected = false,
 }) => {
-  const handleClick = () => {
-    handler(value);
-  };
+  const handleClick = () => handler(value);
 
-  const setCellStyle = () => {
-    return selected
+  const setCellStyle = () =>
+    selected
       ? `cell cell--selected`
       : maxSelected
       ? `cell cell--maxSelected`
       : 'cell';
-  };
 
   return (
     <button className={setCellStyle()} onClick={handleClick}>

@@ -9,12 +9,6 @@
   transition: .4s ease
   user-select: none
 
-  & > svg
-    width: 24px
-    height: 24px
-    fill: var(--color-secondary)
-    transform: scale(-1)
-
   &__primary
     padding: 10px
     background: var(--color-secondary)
@@ -37,19 +31,9 @@
     color: var(--color-secondary)
     font-size: 1.4rem
 
-    &:hover:not(.button__secondary--selected)
+    &:hover
       background: var(--color-secondary)
       color: var(--color-primary)
-
-    &--selected
-      background: var(--color-active)
-      border: 1px solid var(--color-primary)
-
-      &:hover
-        background: var(--color-active-h)
-
-    &--maxSelected
-      pointer-events: none
 
   &__link
     border: none
@@ -60,3 +44,9 @@
     width: 20px
     height: 20px
     color: red
+
+  & > svg
+    width: 24px
+    height: 24px
+    fill: var(--color-secondary)
+    transform: scale(-1)

@@ -2,24 +2,21 @@ import './Field.sass';
 
 import { Cell } from '../';
 
-const Field = ({ id, data, updateSelected }) => {
-  const { name, rules, selected, win, allNumbers } = data;
+const Field = ({ dataConst, dataSelected, setDataSelected }) => {
+  const { name, rules, win, allNumbers } = dataConst;
 
   const handleClickButton = (buttonValue) => {
     const updateSelectedData = () => {
-      if (selected.includes(buttonValue)) {
-        return selected.filter((button) => button !== buttonValue);
+      if (dataSelected.includes(buttonValue)) {
+        return dataSelected.filter((button) => button !== buttonValue);
       }
 
-      if (selected.length === win) return selected;
+      if (dataSelected.length === win) return dataSelected;
 
-      return [...selected, buttonValue];
+      return [...dataSelected, buttonValue];
     };
 
-    updateSelected({
-      ...data,
-      selected: updateSelectedData(),
-    });
+    setDataSelected(updateSelectedData);
   };
 
   return (
@@ -29,7 +26,11 @@ const Field = ({ id, data, updateSelected }) => {
         <p className="field__rules">{rules}</p>
       </div>
 
-      <progress className="field__progress" max={win} value={selected.length} />
+      <progress
+        className="field__progress"
+        max={win}
+        value={dataSelected.length}
+      />
 
       <div className="field__buttons">
         {Array.from({ length: allNumbers }, (_, i) => i + 1).map((button) => {
@@ -38,8 +39,8 @@ const Field = ({ id, data, updateSelected }) => {
               <Cell
                 handler={handleClickButton}
                 value={button}
-                selected={selected.includes(button)}
-                maxSelected={selected.length === win}
+                selected={dataSelected.includes(button)}
+                maxSelected={dataSelected.length === win}
               />
             </div>
           );

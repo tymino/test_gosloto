@@ -1,34 +1,12 @@
 import './Button.sass';
 
-const Button = ({
-  type = 'primary',
-  buttonHandler,
-  value = '',
-  selected = false,
-  maxSelected = false,
-  disabled = false,
-  children,
-}) => {
-  const handleClick = () => {
-    buttonHandler(value);
-  };
-
-  const setButtonType = () => {
-    if (selected) {
-      return `button__${type}--selected`;
-    } else if (maxSelected) {
-      return `button__${type}--maxSelected`;
-    } else {
-      return '';
-    }
-  };
-
+const Button = ({ type = 'primary', handler, disabled = false, children }) => {
   return (
     <button
-      className={`button button__${type} ${setButtonType()}`}
-      onClick={handleClick}
+      className={`button button__${type}`}
+      onClick={handler}
       disabled={disabled}>
-      {children ? children : value}
+      {children}
     </button>
   );
 };
