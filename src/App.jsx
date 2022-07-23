@@ -63,7 +63,7 @@ const App = () => {
     setIsGameEnd(true);
   };
 
-  const handleRandomFillButton = () => {
+  const handleButtonAutofill = () => {
     setFirstFieldSelected(
       generator(firstFieldConsts.win, firstFieldConsts.allNumbers),
     );
@@ -130,7 +130,7 @@ const App = () => {
       <div className="ticket__header">
         <div className="ticket__title">Билет 1</div>
         {!isGameEnd && (
-          <Button type="link" handler={handleRandomFillButton}>
+          <Button type="link" handler={handleButtonAutofill}>
             <svg
               version="1.1"
               viewBox="0 0 476.917 476.917"
