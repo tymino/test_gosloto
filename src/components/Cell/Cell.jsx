@@ -7,9 +7,6 @@ const Cell = ({
   selected = false,
   maxSelected = false,
 }) => {
-  const handleClick = () => handler(value);
-
-  console.log('Cell');
 
   const setCellStyle = useMemo(() => {
     return selected
@@ -20,7 +17,7 @@ const Cell = ({
   }, [selected, maxSelected]);
 
   return (
-    <button className={setCellStyle} onClick={handleClick}>
+    <button className={setCellStyle} onClick={handler} value={value}>
       {value}
     </button>
   );

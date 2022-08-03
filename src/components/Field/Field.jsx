@@ -1,25 +1,35 @@
 import './Field.sass';
 
+import { useCallback } from 'react';
 import { Cell } from '../';
 
 const Field = ({ dataConst, dataSelected, setDataSelected }) => {
   const { name, rules, winCount, allCell } = dataConst.current;
 
-  console.log('Field', dataSelected);
+  const handleClickButton = useCallback(
+    (event) => {
+      const buttonValue = Number(event.target.value);
 
-  const handleClickButton = (buttonValue) => {
-    const updateSelectedData = () => {
-      if (dataSelected.includes(buttonValue)) {
-        return dataSelected.filter((button) => button !== buttonValue);
-      }
+      // ???
+      // Field -> App
+      // ???
 
-      if (dataSelected.length === winCount) return dataSelected;
+      const updateSelectedData = () => {
+        if (dataSelected.includes(buttonValue)) {
+          return dataSelected.filter((button) => button !== buttonValue);
+        }
 
-      return [...dataSelected, buttonValue];
-    };
+        if (dataSelected.length === winCount) {
+          return dataSelected;
+        }
 
-    setDataSelected(updateSelectedData);
-  };
+        return [...dataSelected, buttonValue];
+      };
+
+      setDataSelected(updateSelectedData);
+    },
+    [dataSelected, setDataSelected, winCount],
+  );
 
   return (
     <div className="field">
