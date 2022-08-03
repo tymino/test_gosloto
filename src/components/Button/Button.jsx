@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import './Button.sass';
 
 const Button = ({ type = 'primary', handler, disabled = false, children }) => {
@@ -11,4 +12,4 @@ const Button = ({ type = 'primary', handler, disabled = false, children }) => {
   );
 };
 
-export default Button;
+export default memo(Button);

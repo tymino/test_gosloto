@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import './Cell.sass';
 
 const Cell = ({
@@ -8,18 +9,21 @@ const Cell = ({
 }) => {
   const handleClick = () => handler(value);
 
-  const setCellStyle = () =>
-    selected
+  console.log('Cell');
+
+  const setCellStyle = useMemo(() => {
+    return selected
       ? `cell cell--selected`
       : maxSelected
       ? `cell cell--maxSelected`
       : 'cell';
+  }, [selected, maxSelected]);
 
   return (
-    <button className={setCellStyle()} onClick={handleClick}>
+    <button className={setCellStyle} onClick={handleClick}>
       {value}
     </button>
   );
 };
 
-export default Cell;
+export default memo(Cell);

@@ -3,7 +3,9 @@ import './Field.sass';
 import { Cell } from '../';
 
 const Field = ({ dataConst, dataSelected, setDataSelected }) => {
-  const { name, rules, win, allNumbers } = dataConst;
+  const { name, rules, winCount, allCell } = dataConst.current;
+
+  console.log('Field', dataSelected);
 
   const handleClickButton = (buttonValue) => {
     const updateSelectedData = () => {
@@ -11,7 +13,7 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
         return dataSelected.filter((button) => button !== buttonValue);
       }
 
-      if (dataSelected.length === win) return dataSelected;
+      if (dataSelected.length === winCount) return dataSelected;
 
       return [...dataSelected, buttonValue];
     };
@@ -28,19 +30,19 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
 
       <progress
         className="field__progress"
-        max={win}
+        max={winCount}
         value={dataSelected.length}
       />
 
       <div className="field__buttons">
-        {Array.from({ length: allNumbers }, (_, i) => i + 1).map((button) => {
+        {allCell.map((buttonVal) => {
           return (
-            <div key={button}>
+            <div key={buttonVal}>
               <Cell
                 handler={handleClickButton}
-                value={button}
-                selected={dataSelected.includes(button)}
-                maxSelected={dataSelected.length === win}
+                value={buttonVal}
+                selected={dataSelected.includes(buttonVal)}
+                maxSelected={dataSelected.length === winCount}
               />
             </div>
           );
