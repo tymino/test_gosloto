@@ -71,13 +71,6 @@ const App = () => {
     setGameEnd(true);
   }, [setGameEnd]);
 
-  // ***
-  // попробовать перенести firstFieldSelected и secondFieldSelected в Field
-  // Так я получу 1 стейт на все поля
-  // Этот стейт проверять на "заполненность" И передавать в приложение
-  // Надо проверку на победу делать в App потому что у меня может быть не один Field
-  // ***
-
   useEffect(() => {
     const generateFirstNumbers = generator(
       firstFieldConsts.current.winCount,
