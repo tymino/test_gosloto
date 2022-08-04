@@ -1,35 +1,28 @@
 import './Field.sass';
 
-import { useCallback } from 'react';
+// import { useCallback } from 'react';
 import { Cell } from '../';
 
-const Field = ({ dataConst, dataSelected, setDataSelected }) => {
+const Field = ({ dataConst, dataSelected }) => {
   const { name, rules, winCount, allCell } = dataConst.current;
 
-  const handleClickButton = useCallback(
-    (event) => {
-      const buttonValue = Number(event.target.value);
+  const handleClickCell = ({ target }) => {
+    const cellValue = target.value;
 
-      // ???
-      // Field -> App
-      // ???
+    const updateSelectedData = () => {
+      if (dataSelected.includes(cellValue)) {
+        return dataSelected.filter((button) => button !== cellValue);
+      }
 
-      const updateSelectedData = () => {
-        if (dataSelected.includes(buttonValue)) {
-          return dataSelected.filter((button) => button !== buttonValue);
-        }
+      if (dataSelected.length === winCount) {
+        return dataSelected;
+      }
 
-        if (dataSelected.length === winCount) {
-          return dataSelected;
-        }
+      return [...dataSelected, cellValue];
+    };
 
-        return [...dataSelected, buttonValue];
-      };
-
-      setDataSelected(updateSelectedData);
-    },
-    [dataSelected, setDataSelected, winCount],
-  );
+    // setDataSelected(updateSelectedData);
+  };
 
   return (
     <div className="field">
@@ -49,7 +42,7 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
           return (
             <div key={buttonVal}>
               <Cell
-                handler={handleClickButton}
+                handler={handleClickCell}
                 value={buttonVal}
                 selected={dataSelected.includes(buttonVal)}
                 maxSelected={dataSelected.length === winCount}
