@@ -69,7 +69,7 @@ const App = () => {
 
   const handleClickShowResult = useCallback(() => {
     setGameEnd(true);
-  }, [setGameEnd]);
+  }, [gameEnd]);
 
   useEffect(() => {
     const generateFirstNumbers = generator(
@@ -166,11 +166,13 @@ const App = () => {
             id="firstField"
             dataConst={firstFieldConsts}
             dataSelected={firstFieldSelected}
+            setDataSelected={setFirstFieldSelected}
           />
           <Field
             id="secondField"
             dataConst={secondFieldConsts}
             dataSelected={secondFieldSelected}
+            setDataSelected={setSecondFieldSelected}
           />
         </div>
       ) : (

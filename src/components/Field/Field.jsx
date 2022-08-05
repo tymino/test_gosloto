@@ -1,13 +1,13 @@
 import './Field.sass';
 
-// import { useCallback } from 'react';
+import { memo } from 'react';
 import { Cell } from '../';
 
-const Field = ({ dataConst, dataSelected }) => {
+const Field = ({ dataConst, dataSelected, setDataSelected }) => {
   const { name, rules, winCount, allCell } = dataConst.current;
 
   const handleClickCell = ({ target }) => {
-    const cellValue = target.value;
+    const cellValue = Number(target.value);
 
     const updateSelectedData = () => {
       if (dataSelected.includes(cellValue)) {
@@ -21,7 +21,7 @@ const Field = ({ dataConst, dataSelected }) => {
       return [...dataSelected, cellValue];
     };
 
-    // setDataSelected(updateSelectedData);
+    setDataSelected(updateSelectedData);
   };
 
   return (
@@ -55,4 +55,4 @@ const Field = ({ dataConst, dataSelected }) => {
   );
 };
 
-export default Field;
+export default memo(Field);
