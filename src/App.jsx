@@ -69,7 +69,7 @@ const App = () => {
 
   const handleClickShowResult = useCallback(() => {
     setGameEnd(true);
-  }, [gameEnd]);
+  }, []);
 
   useEffect(() => {
     const generateFirstNumbers = generator(
@@ -96,6 +96,7 @@ const App = () => {
         setUserWin(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameEnd]);
 
   useEffect(() => {

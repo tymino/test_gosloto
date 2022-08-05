@@ -1,13 +1,7 @@
 import { memo, useMemo } from 'react';
 import './Cell.sass';
 
-const Cell = ({
-  handler,
-  value = '',
-  selected = false,
-  maxSelected = false,
-}) => {
-
+const Cell = ({ value = '', selected = false, maxSelected = false }) => {
   const setCellStyle = useMemo(() => {
     return selected
       ? `cell cell--selected`
@@ -17,7 +11,7 @@ const Cell = ({
   }, [selected, maxSelected]);
 
   return (
-    <button className={setCellStyle} onClick={handler} value={value}>
+    <button className={setCellStyle} value={value}>
       {value}
     </button>
   );

@@ -1,12 +1,13 @@
 import './Field.sass';
 
-import { memo } from 'react';
 import { Cell } from '../';
 
 const Field = ({ dataConst, dataSelected, setDataSelected }) => {
   const { name, rules, winCount, allCell } = dataConst.current;
 
   const handleClickCell = ({ target }) => {
+    if (!target.classList.contains('cell')) return;
+
     const cellValue = Number(target.value);
 
     const updateSelectedData = () => {
@@ -40,9 +41,8 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
       <div className="field__buttons">
         {allCell.map((buttonVal) => {
           return (
-            <div key={buttonVal}>
+            <div key={buttonVal} onClick={handleClickCell}>
               <Cell
-                handler={handleClickCell}
                 value={buttonVal}
                 selected={dataSelected.includes(buttonVal)}
                 maxSelected={dataSelected.length === winCount}
@@ -55,4 +55,4 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
   );
 };
 
-export default memo(Field);
+export default Field;
