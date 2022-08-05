@@ -1,5 +1,6 @@
 import './Field.sass';
 
+import { memo } from 'react';
 import { Cell } from '../';
 
 const Field = ({ dataConst, dataSelected, setDataSelected }) => {
@@ -55,4 +56,4 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
   );
 };
 
-export default Field;
+export default memo(Field);
