@@ -1,21 +1,13 @@
 import './App.sass';
 import { useState, useEffect, useRef, useCallback } from 'react';
 
+import { titleTicket, firstFieldData, secondFieldData } from './gameDB';
+import generator from './utils/generator';
+
 import { Button, Field } from './components';
 
-const generator = (length, maxValue) => {
-  const randomNumbers = new Set();
-
-  while (randomNumbers.size < length) {
-    const number = Math.floor(Math.random() * maxValue + 1);
-    randomNumbers.add(number);
-  }
-
-  return [...randomNumbers];
-};
-
 const App = () => {
-  const randButtonSvg = useRef(
+  const svgStick = useRef(
     <svg version="1.1" viewBox="0 0 476.917 476.917" xmlSpace="preserve">
       <path
         d="M399.135,0L90.503,308.633l77.781,77.782L476.917,77.783L399.135,0z M434.491,77.783l-160.14,160.14l-35.355-35.355
@@ -28,53 +20,34 @@ const App = () => {
     </svg>,
   );
 
-  const firstFieldConsts = useRef({
-    name: 'Поле 1',
-    rules: 'Отметьте 8 чисел.',
-    winCount: 8,
-    allCell: Array.from({ length: 19 }, (_, i) => i + 1),
-  });
-  const secondFieldConsts = useRef({
-    name: 'Поле 2',
-    rules: 'Отметьте 1 число.',
-    winCount: 1,
-    allCell: Array.from({ length: 2 }, (_, i) => i + 1),
-  });
-
-  const [userWin, setUserWin] = useState(false);
-  const [gameEnd, setGameEnd] = useState(false);
+  const [isUserWin, setIsUserWin] = useState(false);
+  const [isGameEnd, setIsGameEnd] = useState(false);
   const [serverWarning, setServerWarning] = useState('');
 
   const [firstFieldSelected, setFirstFieldSelected] = useState([]);
   const [secondFieldSelected, setSecondFieldSelected] = useState([]);
 
-  const [resultButtonDisable, setResultButtonDisable] = useState(true);
+  const [isDisableResultButton, setIsDisableResultButton] = useState(true);
 
   const handleButtonAutofill = useCallback(() => {
     setFirstFieldSelected(
-      generator(
-        firstFieldConsts.current.winCount,
-        firstFieldConsts.current.allCell.length,
-      ),
+      generator(firstFieldData.winCount, firstFieldData.allCell.length),
     );
     setSecondFieldSelected(
-      generator(
-        secondFieldConsts.current.winCount,
-        secondFieldConsts.current.allCell.length,
-      ),
+      generator(secondFieldData.winCount, secondFieldData.allCell.length),
     );
 
-    setResultButtonDisable(false);
+    setIsDisableResultButton(false);
   }, [setFirstFieldSelected, setSecondFieldSelected]);
 
-  const handleClickShowResult = useCallback(() => {
-    setGameEnd(true);
+  const handleClickResultButton = useCallback(() => {
+    setIsGameEnd(true);
   }, []);
 
   useEffect(() => {
     const generateFirstNumbers = generator(
-      firstFieldConsts.current.winCount,
-      firstFieldConsts.current.allCell.length,
+      firstFieldData.winCount,
+      firstFieldData.allCell.length,
     );
 
     const overlapFirstField = firstFieldSelected.filter((num) =>
@@ -82,36 +55,36 @@ const App = () => {
     );
 
     if (overlapFirstField.length >= 4) {
-      setUserWin(true);
+      setIsUserWin(true);
     } else if (overlapFirstField.length === 3) {
       const generateSecondNumbers = generator(
-        secondFieldConsts.current.winCount,
-        secondFieldConsts.current.allCell.length,
+        secondFieldData.winCount,
+        secondFieldData.allCell.length,
       );
       const overlapSecondField = secondFieldSelected.filter((num) =>
         generateSecondNumbers.includes(num),
       );
 
       if (overlapSecondField.length === 1) {
-        setUserWin(true);
+        setIsUserWin(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameEnd]);
+  }, [isGameEnd]);
 
   useEffect(() => {
     const isFirstFieldSelected =
-      firstFieldSelected.length === firstFieldConsts.current.winCount;
+      firstFieldSelected.length === firstFieldData.winCount;
     const isSecondFieldSelected =
-      secondFieldSelected.length === secondFieldConsts.current.winCount;
+      secondFieldSelected.length === secondFieldData.winCount;
 
     const result = !(isFirstFieldSelected && isSecondFieldSelected);
 
-    setResultButtonDisable(result);
+    setIsDisableResultButton(result);
   }, [firstFieldSelected, secondFieldSelected]);
 
   useEffect(() => {
-    if (!gameEnd) return;
+    if (!isGameEnd) return;
 
     let timer = null;
     let countConnect = 0;
@@ -121,7 +94,7 @@ const App = () => {
         firstField: firstFieldSelected,
         secondField: secondFieldSelected,
       },
-      isTicketWon: userWin,
+      isTicketWon: isUserWin,
     };
 
     const fetchData = async () => {
@@ -148,48 +121,46 @@ const App = () => {
     fetchData();
 
     return () => clearTimeout(timer);
-  }, [gameEnd, firstFieldSelected, secondFieldSelected, userWin]);
+  }, [isGameEnd, firstFieldSelected, secondFieldSelected, isUserWin]);
 
   return (
     <div className="ticket">
       <div className="ticket__header">
-        <div className="ticket__title">Билет 1</div>
-        {!gameEnd && (
+        <div className="ticket__title">{titleTicket}</div>
+        {!isGameEnd && (
           <Button type="link" handler={handleButtonAutofill}>
-            {randButtonSvg.current}
+            {svgStick.current}
           </Button>
         )}
       </div>
 
-      {!gameEnd ? (
+      {!isGameEnd ? (
         <div className="ticket__game">
           <Field
-            id="firstField"
-            dataConst={firstFieldConsts}
-            dataSelected={firstFieldSelected}
-            setDataSelected={setFirstFieldSelected}
+            fieldData={firstFieldData}
+            cellSelected={firstFieldSelected}
+            setCellSelected={setFirstFieldSelected}
           />
           <Field
-            id="secondField"
-            dataConst={secondFieldConsts}
-            dataSelected={secondFieldSelected}
-            setDataSelected={setSecondFieldSelected}
+            fieldData={secondFieldData}
+            cellSelected={secondFieldSelected}
+            setCellSelected={setSecondFieldSelected}
           />
         </div>
       ) : (
         <div
           className={`ticket__inform ${
-            userWin ? 'ticket__inform--win' : 'ticket__inform--lose'
+            isUserWin ? 'ticket__inform--win' : 'ticket__inform--lose'
           }`}>
-          {userWin ? 'Победа' : 'Неудача'}
+          {isUserWin ? 'Победа' : 'Неудача'}
         </div>
       )}
 
-      {!gameEnd && (
+      {!isGameEnd && (
         <Button
           type="primary"
-          disabled={resultButtonDisable}
-          handler={handleClickShowResult}>
+          disabled={isDisableResultButton}
+          handler={handleClickResultButton}>
           Показать результат
         </Button>
       )}

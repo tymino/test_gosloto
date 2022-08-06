@@ -1,5 +1,5 @@
-import { memo, useMemo } from 'react';
 import './Cell.sass';
+import { memo, useMemo } from 'react';
 
 const Cell = ({ value = '', selected = false, maxSelected = false }) => {
   const setCellStyle = useMemo(() => {

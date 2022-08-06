@@ -1,10 +1,10 @@
 import './Field.sass';
-
 import { memo } from 'react';
+
 import { Cell } from '../';
 
-const Field = ({ dataConst, dataSelected, setDataSelected }) => {
-  const { name, rules, winCount, allCell } = dataConst.current;
+const Field = ({ fieldData, cellSelected, setCellSelected }) => {
+  const { name, rules, winCount, allCell } = fieldData;
 
   const handleClickCell = ({ target }) => {
     if (!target.classList.contains('cell')) return;
@@ -12,18 +12,18 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
     const cellValue = Number(target.value);
 
     const updateSelectedData = () => {
-      if (dataSelected.includes(cellValue)) {
-        return dataSelected.filter((button) => button !== cellValue);
+      if (cellSelected.includes(cellValue)) {
+        return cellSelected.filter((button) => button !== cellValue);
       }
 
-      if (dataSelected.length === winCount) {
-        return dataSelected;
+      if (cellSelected.length === winCount) {
+        return cellSelected;
       }
 
-      return [...dataSelected, cellValue];
+      return [...cellSelected, cellValue];
     };
 
-    setDataSelected(updateSelectedData);
+    setCellSelected(updateSelectedData);
   };
 
   return (
@@ -36,7 +36,7 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
       <progress
         className="field__progress"
         max={winCount}
-        value={dataSelected.length}
+        value={cellSelected.length}
       />
 
       <div className="field__buttons">
@@ -45,8 +45,8 @@ const Field = ({ dataConst, dataSelected, setDataSelected }) => {
             <div key={buttonVal} onClick={handleClickCell}>
               <Cell
                 value={buttonVal}
-                selected={dataSelected.includes(buttonVal)}
-                maxSelected={dataSelected.length === winCount}
+                selected={cellSelected.includes(buttonVal)}
+                maxSelected={cellSelected.length === winCount}
               />
             </div>
           );
